@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "../../../components/ui/label";
-import {Input} from "../../../components/ui/input"
+import { Input } from "../../../components/ui/input"
 import { cn } from "../../lib/util";
 import {
   IconBrandGithub,
@@ -9,46 +9,104 @@ import {
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
 
+type formdata = {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  confirmpass: string;
+}
+
 export default function SignupFormDemo() {
+  const [data, setData] = useState<formdata>({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirmpass: ""
+  })
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    console.log("Form submitted",data);
   };
+
+
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
       <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-        Welcome to Aceternity
+        SignUp Form
       </h2>
-      <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-        Login to aceternity if you can because we don&apos;t have a login flow
-        yet
-      </p>
+
 
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
           <LabelInputContainer>
             <Label htmlFor="firstname">First name</Label>
-            <Input id="firstname" placeholder="Tyler" type="text" />
+            <Input id="firstname" placeholder="Tyler"
+              type="text"
+              name="firstname"
+              value={data.firstname}
+              onChange={(e) => setData((prev) => ({
+                ...prev,
+                [e.target.name]: e.target.value
+              }))}
+            />
           </LabelInputContainer>
+
           <LabelInputContainer>
             <Label htmlFor="lastname">Last name</Label>
-            <Input id="lastname" placeholder="Durden" type="text" />
+            <Input id="lastname" placeholder="Durden"
+              type="text"
+              name="lastname"
+              value={data.lastname}
+              onChange={(e) => setData((prev) => ({
+                ...prev,
+                [e.target.name]: e.target.value
+              }))}
+            />
           </LabelInputContainer>
+
         </div>
+
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+          <Input id="email" placeholder="projectmayhem@fc.com" type="email"
+            name="email"
+            value={data.email}
+            onChange={(e) => setData((prev) => ({
+              ...prev,
+              [e.target.name]: e.target.value
+            }))}
+          />
         </LabelInputContainer>
+
+
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" />
+          <Input id="password" placeholder="••••••••" type="password"
+            name="password"
+            value={data.password}
+            onChange={(e) => setData((prev) => ({
+              ...prev,
+              [e.target.name]: e.target.value
+            }))}
+          />
         </LabelInputContainer>
+
+
         <LabelInputContainer className="mb-8">
-          <Label htmlFor="twitterpassword">Your twitter password</Label>
+          <Label htmlFor="confpass">Confirm Password</Label>
           <Input
-            id="twitterpassword"
+            id="confpass"
             placeholder="••••••••"
             type="twitterpassword"
+            name="confirmpass"
+            value={data.confirmpass}
+            onChange={(e) => setData((prev) => ({
+              ...prev,
+              [e.target.name]: e.target.value
+            }))}
           />
         </LabelInputContainer>
 
