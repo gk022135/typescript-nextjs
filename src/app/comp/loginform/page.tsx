@@ -8,23 +8,52 @@ import {
   IconBrandGoogle,
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
+import { getEnvValue } from "@/app/envfunction";
 
 type fromdata = {
   email : string,
   password : string
 }
 
+
+
 export default function LoginFormDemo() {
   const [data, setData] = useState<fromdata>({
     email : "",
     password : "",
   })
+  const [loading, setLoading] = useState(false);
   console.log("hello ji ",data);
 
+  const URL_BASE = getEnvValue(1);
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
+    setLoading(true);
+
+    try {
+      const datares = await fetch(`${URL_BASE}/log-sign/login`, {
+        method : "POST",
+        headers : {
+          Credential : "application/json",
+        },
+        body : JSON.stringify(data)
+      })
+      
+      console.log("res",datares);
+      if(datares.ok){
+        alert("hello bro you got logged in")
+      }
+      if(!datares.ok){
+        alert("failed to login bro!!");
+      }
+      setLoading(false)
+
+    } catch (error) {
+      setLoading(false)
+      console.log("error in login", error);
+    }
   };
   return (
 
@@ -62,7 +91,7 @@ export default function LoginFormDemo() {
             className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
             type="submit"
           >
-            Login &rarr;
+            {loading ? ("loging...") : ("Login")} &rarr;
             <BottomGradient />
           </button>
 

@@ -4,27 +4,29 @@ import { NextRequest, NextResponse } from "next/server"
 import { connectMongo } from "../../configs/mongdb";
 import User from "../../models/usermodel";
 import { parse } from "path";
+import { headers } from "next/headers";
+import { json } from "stream/consumers";
 
 export async function POST(req: NextRequest) {
     try {
         connectMongo();
 
         const Logindata = await req.json();
-        const email =
-            console.log("login data", Logindata)
-        console.log("email", Logindata.email);
-        console.log("password", Logindata.password)
+        console.log("login data", Logindata)
+
 
 
         if (!Logindata.email || !Logindata.password) {
             return NextResponse.json({
                 message: "invalid request",
-                success: false
+                success: false,
             }, { status: 400 })
         }
 
+        const email = Logindata.email;
 
-        const userExists = await User.findOne({ email: Logindata.email });
+        const userExists = await User.find({ email: email });
+        console.log("hello ",userExists)
         if (!userExists) {
             return NextResponse.json(
                 {
@@ -34,8 +36,8 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
-        const userpass = userExists.password;
-
+        const userpass = JSON.stringify(userExists);
+        console.log("pass", userpass.password)
 
         //varifying
         if (Logindata.password != userpass) {

@@ -8,6 +8,9 @@ import {
   IconBrandGoogle,
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
+import { getEnvValue } from "@/app/envfunction";
+
+
 
 type formdata = {
   firstname: string;
@@ -25,11 +28,40 @@ export default function SignupFormDemo() {
     password: "",
     confirmpass: ""
   })
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true)
     e.preventDefault();
     console.log("Form submitted",data);
     // making post request to 
+
+
+    const URL_BASE = getEnvValue(1);
+    try {
+
+      const datares = await fetch(`${URL_BASE}/log-sign/signup`,{
+       method : "POST",
+       headers : {
+        "Content-Type" : "application/json"
+       },
+       body : JSON.stringify(data)
+
+      })
+      console.log("hello ji", datares)
+
+      setLoading(false)
+      if(!datares){
+        alert("error whiile signing up");
+        console.log("error", datares);
+      }
+      alert("your from is submmited successfully");
+
+    } catch (error) {
+      setLoading(false)
+      console.log("error",error);
+    }
+
   };
 
 
@@ -115,7 +147,7 @@ export default function SignupFormDemo() {
           className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
           type="submit"
         >
-          Sign up &rarr;
+          {loading ? ("Submitting...") : ("Sign up")} &rarr;
           <BottomGradient />
         </button>
 
