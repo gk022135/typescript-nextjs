@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectMongo } from "../../configs/mongdb";
 import User from "@/app/api/models/usermodel"
 
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

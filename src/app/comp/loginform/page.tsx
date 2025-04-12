@@ -34,17 +34,19 @@ export default function LoginFormDemo() {
 
     try {
       const datares = await fetch(`${URL_BASE}/log-sign/login`, {
-        method : "POST",
-        headers : {
-          Credential : "application/json",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body : JSON.stringify(data)
-      })
+        body: JSON.stringify(data),
+      });
       
-      console.log("res",datares);
+      const result = await datares.json();
+      console.log("res", result);
       if(datares.ok){
         alert("hello bro you got logged in")
       }
+      
       if(!datares.ok){
         alert("failed to login bro!!");
       }

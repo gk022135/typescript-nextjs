@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
             );
         }
         const userpass = JSON.stringify(userExists);
-        console.log("pass", userpass.password)
+        console.log("pass", userpass)
 
         //varifying
         if (Logindata.password != userpass) {
